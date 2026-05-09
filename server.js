@@ -74,18 +74,10 @@ app.get('/categories', (req, res) => {
   renderPage(res, 'categories', 'Categories', { categories });
 });
 
-const startServer = async () => {
-  await new Promise((resolve, reject) => {
-    const server = app.listen(port, () => {
-      console.log(`Server listening on http://localhost:${port}`);
-      resolve(server);
-    });
-
-    server.on('error', reject);
+const startServer = () => {
+  app.listen(port, () => {
+    console.log(`Server listening on http://localhost:${port}`);
   });
 };
 
-startServer().catch((error) => {
-  console.error('Server failed to start:', error);
-  process.exit(1);
-});
+startServer();
