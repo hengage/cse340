@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Service categories</p>
+    <h1>Categories</h1>
+    <p>Choose a category that matches your interests and explore related opportunities.</p>
+  </div>
+  <ul class="category-list">
+    <% categories.forEach((category) => { %>
+      <li><%= category %></li>
+    <% }); %>
+  </ul>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Volunteer opportunities</p>
+    <h1>Projects</h1>
+    <p>Each project is designed to help community members connect and contribute where it matters most.</p>
+  </div>
+  <div class="project-list">
+    <% serviceProjects.forEach((project) => { %>
+      <article class="project-card">
+        <h2><%= project.name %></h2>
+        <p><%= project.summary %></p>
+      </article>
+    <% }); %>
+  </div>
+</section>
+<%- include('partials/footer') %>

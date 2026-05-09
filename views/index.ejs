@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div>
+    <p class="eyebrow">Create community impact</p>
+    <h1>Welcome to <%= siteName %></h1>
+    <p class="hero-copy">
+      Explore service organizations, projects, and categories that help your community grow.
+    </p>
+    <div class="hero-actions">
+      <a href="/organizations" class="button">See Organizations</a>
+      <a href="/categories" class="button button-secondary">Explore Categories</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <h2>Featured Projects</h2>
+      <ul class="feature-list">
+        <% serviceProjects.forEach((project) => { %>
+          <li><strong><%= project.name %>:</strong> <%= project.summary %></li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="section-grid">
+  <article class="site-card">
+    <h2>Organizations</h2>
+    <p>Learn about local nonprofits and service partners that create meaningful volunteer opportunities.</p>
+    <a href="/organizations" class="link-button">View organizations</a>
+  </article>
+  <article class="site-card">
+    <h2>Projects</h2>
+    <p>Review upcoming and ongoing service projects designed for volunteers of all experience levels.</p>
+    <a href="/projects" class="link-button">View projects</a>
+  </article>
+  <article class="site-card">
+    <h2>Categories</h2>
+    <p>Choose a service category that matches your interest, from wellness to environmental work.</p>
+    <a href="/categories" class="link-button">View categories</a>
+  </article>
+</section>
+<%- include('partials/footer') %>
