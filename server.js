@@ -67,20 +67,32 @@ app.get('/', (req, res) => {
   renderPage(res, 'index', 'Home', { organizations, serviceProjects });
 });
 
-app.get('/organizations', async (req, res) => {
-  const organizations = await getAllOrganizations();
-  renderPage(res, 'organizations', 'Organizations', { organizations });
+app.get('/organizations', async (req, res, next) => {
+  try {
+    const organizations = await getAllOrganizations();
+    renderPage(res, 'organizations', 'Organizations', { organizations });
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.get('/projects', async (req, res) => {
-  const projects = await getAllProjects();
-  console.log('Projects loaded:', projects);
-  renderPage(res, 'projects', 'Projects', { serviceProjects: projects });
+app.get('/projects', async (req, res, next) => {
+  try {
+    const projects = await getAllProjects();
+    console.log('Projects loaded:', projects);
+    renderPage(res, 'projects', 'Projects', { serviceProjects: projects });
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.get('/categories', async (req, res) => {
-  const categories = await getAllCategories();
-  renderPage(res, 'categories', 'Categories', { categories });
+app.get('/categories', async (req, res, next) => {
+  try {
+    const categories = await getAllCategories();
+    renderPage(res, 'categories', 'Categories', { categories });
+  } catch (error) {
+    next(error);
+  }
 });
 
 const startServer = async () => {
@@ -96,3 +108,14 @@ const startServer = async () => {
 };
 
 startServer();
+
+// Express error handler to catch async errors and render a friendly page
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500);
+  try {
+    res.render('error', { title: 'Server Error', siteName, error: err.message });
+  } catch (renderErr) {
+    res.type('text').send('Server error');
+  }
+});
