@@ -14,7 +14,7 @@ export async function getAllProjects() {
     ORDER BY p.date;
   `;
 
-  const result = await pool.query(query);
+  const result = await db.query(query);
   return result.rows.map((row) => ({
     ...row,
     date: row.date ? new Date(row.date).toLocaleDateString('en-US', {
