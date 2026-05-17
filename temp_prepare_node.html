@@ -1,0 +1,321 @@
+﻿HTTP/1.1 200 OK
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Strict-Transport-Security: max-age=31556952
+x-proxy-cache: MISS
+X-GitHub-Request-Id: 7CF0:192D4:1A2F8E0:1A905D0:6A08FDF9
+Age: 0
+X-Served-By: cache-lis1490059-LIS
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Timer: S1778974202.514992,VS0,VE145
+Vary: Accept-Encoding
+X-Fastly-Request-ID: fdb6368fa8aa05eac443853a01a53a7ac811e32e
+Accept-Ranges: bytes
+Content-Length: 15741
+Cache-Control: max-age=600
+Content-Type: text/html; charset=utf-8
+Date: Sat, 16 May 2026 23:30:01 GMT
+Expires: Sat, 16 May 2026 23:40:01 GMT
+ETag: "69f5371e-3d7d"
+Last-Modified: Fri, 01 May 2026 23:28:30 GMT
+Server: GitHub.com
+Via: 1.1 varnish
+
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSE 340 | Learning Activities</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles/course.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark-reasonable.min.css">
+
+</head>
+
+<body>
+  <header>
+    <div class="page">
+      <h1>CSE 340<span id="coursetitle">: Web Backend Development</span></h1>
+      <img src="../images/byui-logo.svg" alt="BYU-I logo" class="logo">
+    </div>
+  </header>
+  <main class="page">
+    <nav id="autogen-top-nav">
+      <!-- This nav is auto-generated -->
+      <span><a href="../index.html">Home</a></span>
+      <span><a href="../week01/index.html">W1</a></span>
+      <span class="active"><a href="../week02/index.html">W2</a></span>
+      <span><a href="../week03/index.html">W3</a></span>
+      <span><a href="../week04/index.html">W4</a></span>
+      <span><a href="../week05/index.html">W5</a></span>
+      <span><a href="../week06/index.html">W6</a></span>
+      <span><a href="../week07/index.html">W7</a></span>
+      <!-- end auto-generated -->
+    </nav>
+    <h2>W02 Learning Activity: Connecting to Databases from Node.js</h2>
+
+    <h3>Overview</h3>
+    <p>In this activity, you will connect your Node.js application to the PostgreSQL database you created in the previous activity. This will allow your application to interact with the database, enabling you to perform operations such as querying data and inserting new records.</p>
+    
+    <h3>Activity Instructions</h3>
+    <p>Follow these steps to connect your Node.js application to your PostgreSQL database.</p>
+
+    <h4 class="step">Gather the Database Connection Information</h4>
+    <p>To connect to your database, you will need to gather the connection information (database host, username, password, etc.). To find this information do the following:</p>
+
+    <ol>
+      <li>Log in to your Render.com account.</li>
+      <li>Navigate to the <strong>Databases</strong> section from the dashboard.</li>
+      <li>Select the PostgreSQL database you created for this course.</li>
+      <li>Locate the <strong>Connections</strong> information, find the <strong>External Database URL</strong> item, and click the <strong>Copy to Clipboard</strong> button. This URL contains all the information needed to connect to your database.</li>
+    </ol>
+
+    <h4 class="step">Prepare the libraries and configuration files</h4>
+    <p>The following steps will walk you through installing the necessary libraries and setting up enviornment variables.</p>
+
+    <ol>
+      <li>Install the <code>pg</code> library, which is a PostgreSQL client for Node.js. You can do this by running the following command in your project directory:
+        <pre><code class="code-highlight">npm install pg</code></pre>
+      </li>
+      <li>Update the <code>.env</code> file in the root of your project to securely store your database connection information. Add the following lines to the file: 
+<pre><code class="code-highlight">DB_URL=...
+ENABLE_SQL_LOGGING=true
+</code></pre>
+        Make sure to replace the <code>...</code> with your actual database details from the External Database URL you found earlier on the Render.com dashboard.
+      </li>
+    </ol>
+
+    <div class="callout warning">
+        <h4>Protect Your Database Credentials</h4>
+        <p>
+            Double-check that your <code>.env</code> file is listed in your <code>.gitignore</code> file. Database credentials are sensitive information that should never be committed to version control. Anyone with access to these credentials could potentially access or modify your database.
+        </p>
+    </div>
+
+    <h4 class="step">Create the Environment Variables at Render</h4>
+    <p>Next, you need to set up the same environment variables on Render.com so that your deployed application can access the database as well.</p>
+    <ol>
+      <li>Return to the Render.com dashboard for your project.</li>
+      <li>Select your web service application (not your database).</li>
+      <li>Go to the <strong>Environment</strong> tab.</li>
+      <li>Add a new environment variable named <code>DB_URL</code> and paste as the value the Internal Database URL from the database dashboard screen where you copied the External Database URL earlier (Click <strong>Edit</strong> in the <strong>Environment Variables</strong> section, then click <strong>+ Add</strong> to add a new variable.) Alternatively, you can select Datastore URL from the +Add button menu and select the Database from the list provided.</li>
+      <li>Add another environment variable named <code>ENABLE_SQL_LOGGING</code> and set its value to <code>true</code> for debugging purposes.</li>
+      <li>Save the changes.</li>
+    </ol>
+
+    <div class="callout warning">
+      <h4>SQL Debugging</h4>
+      <p>At some point in the future (certainly before you had active users on your website), you would change the value of your <strong>ENABLE_SQL_LOGGING</strong> environment variable to be <code>false</code> at Render, so that you application runs much more efficiently. However, at this point, the logging will be helpful as you track down bugs.</p>
+    </div>
+
+    <h4 class="step">Create the Database Connection File</h4>
+
+    <p>This section helps you create a file that will handle the connection to the database. It uses a connection pool approach to make the connection process as efficient as possible.</p>
+
+    <h5>Connection Pooling</h5>
+    <p>
+        Creating a new database connection for every query would be extremely inefficient. Database connections require network handshakes, authentication, and resource allocation, which takes time and server resources. Connection pooling solves this by maintaining a set of reusable connections that can be shared across multiple requests.
+    </p>
+    <p>
+        When your application needs to run a query, it borrows a connection from the pool, executes the query, and returns the connection to the pool for reuse. This dramatically improves performance and reduces the load on your database server.
+    </p>
+
+    <h5>Debugging Information</h5>
+
+    <p>In the code, you will notice that it adds some debugging logic. In short, it wraps the calls to the database so that when you are in debugging mode (in your <strong>.env</strong> you have set <code>ENABLE_SQL_LOGGING=true</code>), it will log every query to the console. This is very helpful when you are finding and fixing bugs. Then, when you are not in debugging mode (in your <strong>.env</strong> you have set <code>ENABLE_SQL_LOGGING=false</code>) the queries will be sent directly to the database with no extra steps for debugging.</p>
+
+    <h5>Create the Database Connection File</h5>
+
+    <p>In your <code>src</code> directory, create a new subdirectory named <code>models</code>. Then create a new file named <code>db.js</code> in the <code>src/models/</code> directory of your project. This file will handle the database connection logic.</p>
+      
+    <p>Copy and paste the following code snippet into <code>db.js</code>:</p>
+<pre><code class="javascript">
+import { Pool } from 'pg';
+
+/**
+ * Connection pool for PostgreSQL database.
+ * 
+ * A connection pool maintains a set of reusable database connections
+ * to avoid the overhead of creating new connections for each request.
+ * This improves performance and reduces load on the database server.
+ * 
+ * Uses a connection string from environment variables for simplified setup.
+ * The connection string format is:
+ * postgresql://username:password@host:port/database
+ */
+const pool = new Pool({
+    connectionString: process.env.DB_URL,
+    ssl: true
+});
+
+/**
+ * Common SSL Issue:
+ *
+ * You may encounter SSL connection errors depending on your operating system, Node.js
+ * version, or PostgreSQL server settings. If you have confirmed your credentials are
+ * correct but still see SSL errors, try updating the 'ssl' property in the Pool
+ * configuration above to:
+ *
+ * ssl: {
+ *     rejectUnauthorized: false
+ * }
+ */
+
+/**
+ * Since we will modify the normal pool object in development mode, we need to create and
+ * export a reference to the pool object. This allows us to use the same name for the
+ * export regardless of whether we are in development or production mode.
+ */
+let db = null;
+
+if (process.env.NODE_ENV === 'development' && process.env.ENABLE_SQL_LOGGING === 'true') {
+    /**
+     * In development mode, we wrap the pool to provide query logging.
+     * This helps with debugging by showing all executed queries in the console.
+     * 
+     * The wrapper also adds timing information to help identify slow queries
+     * and tracks the number of rows affected by each query.
+     */
+    db = {
+        async query(text, params) {
+            try {
+                const start = Date.now();
+                const res = await pool.query(text, params);
+                const duration = Date.now() - start;
+                console.log('Executed query:', { 
+                    text: text.replace(/\s+/g, ' ').trim(), 
+                    duration: `${duration}ms`, 
+                    rows: res.rowCount 
+                });
+                return res;
+            } catch (error) {
+                console.error('Error in query:', { 
+                    text: text.replace(/\s+/g, ' ').trim(), 
+                    error: error.message 
+                });
+                throw error;
+            }
+        },
+
+        async close() {
+            await pool.end();
+        }
+    };
+} else {
+    // In production, export the pool directly without logging overhead
+    db = pool;
+}
+
+/**
+ * Tests the database connection by executing a simple query.
+ */
+const testConnection = async() => {
+    try {
+        const result = await db.query('SELECT NOW() as current_time');
+        console.log('Database connection successful:', result.rows[0].current_time);
+        return true;
+    } catch (error) {
+        console.error('Database connection failed:', error.message);
+        throw error;
+    }
+};
+
+export { db as default, testConnection };
+
+</code></pre>
+
+    <p>Take the time to read through this code and understand each line. If you do not understand something, ask AI to explain it to you.</p>
+
+
+    <h4 class="step">Update the Main Server File to Test the Connection</h4>
+    <p>Now that you have created the database connection and setup files, you need to update your main server file (<code>server.js</code>) to test the database connection when the server starts.</p>
+    <ol>
+      <li>Open the <code>server.js</code> file in the root of your project.</li>
+      <li>After your other import statements at the top of the <code>server.js</code> file, add the following code to import the <code>testConnection</code> function from the <code>db.js</code> file:
+        <pre><code class="javascript">import { testConnection } from './src/models/db.js';</code></pre>
+      </li>
+      <li>Update the server startup code to call the <code>testConnection</code> function. Modify the <code>app.listen</code> section to look like this:
+<pre><code class="javascript">app.listen(PORT, async () => {
+  try {
+    await testConnection();
+    console.log(`Server is running at http://127.0.0.1:${PORT}`);
+    console.log(`Environment: ${NODE_ENV}`);
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
+});
+</code></pre>
+      <p>This updated code contains a few changes:</p>
+      <ul>
+        <li>The <code>app.listen</code> function is now an asynchronous function, allowing it to use the <code>await</code> keyword.</li>
+        <li>The <code>testConnection</code> function is called before the server starts listening for requests.</li>
+        <li>A try-catch block is used, so that if the connection test fails, an error message is logged to the console.</li>
+      </ul>
+
+      </li>
+    </ol>
+
+    <h4 class="step">Run and Test Your Application</h4>
+    <p>Now that you have set up the database connection and updated your server file, it's time to run your application and test the connection to the database.</p>
+    <ol>
+      <li>In your terminal, navigate to your project directory.</li>
+      <li>Start your Node.js server by running the following command:
+        <pre><code>npm run dev</code></pre>
+      </li>
+      <li>Check the console output for messages indicating whether the database connection was successful. You should see a message like:
+        <pre><code>Database connection successful: [current_time]</code></pre>
+      </li>
+      <li>If you see an error message, double-check your database connection details in the <code>.env</code> file and ensure that your database is running and accessible.</li>
+    </ol>
+
+    <div class="callout warning">
+      <h4>Stop and fix problems now</h4>
+      <p>If you have run into problems with any of the steps in this assignment, you need to fix them and get everything working before moving on.</p>
+      <p>Searching the internet and asking AI can be very helpful. You can also post messages for your teammates or your instructor in Microsoft Teams.</p>
+    </div>
+
+    <div class="callout info">
+      <h4>Optional Video Walkthrough</h4>
+      <p>While the following video may be helpful to see the steps in action, make sure to walk through the written instructions directly because there may be important steps that are not covered in the video.</p>
+
+      <p>Direct link: <a href="https://video.byui.edu/media/t/1_bp5h8tqb" target="_blank">Connecting to Databases from Node.js</a></p>
+
+      <figure class="video-container">
+        <iframe id="kaltura_player"
+          src="https://cdnapisec.kaltura.com/p/1157612/sp/115761200/embedIframeJs/uiconf_id/47306393/partner_id/1157612?iframeembed=true&playerId=kaltura_player&entry_id=1_bp5h8tqb&flashvars[localizationCode]=en&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_qv5py86n"
+          width="400" height="285" allowfullscreen webkitallowfullscreen mozAllowFullScreen
+          allow="autoplay *; fullscreen *; encrypted-media *"
+          sandbox="allow-downloads allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation"
+          frameborder="0"></iframe>
+      </figure>
+    </div>    
+
+    <h3>Next Step</h3>
+    <p>Complete the other <a href="./index.html">Week 02</a> Learning Activities</p>
+    <p>After you have completed all the learning activities for this lesson, return to Canvas to submit a quiz.</p>
+
+    <p>Other Links:</p>
+    <ul>
+      <li>Return to:  <a href="./index.html">Week Overview</a> | <a href="../index.html">Course Home</a></li>
+    </ul>
+
+  </main>
+
+  <footer>
+    <p>Copyright &copy; Brigham Young University-Idaho | All rights reserved</p>
+  </footer>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
+</body>
+
+</html>
+
