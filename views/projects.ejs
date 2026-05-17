@@ -8,8 +8,10 @@
   <div class="project-list">
     <% serviceProjects.forEach((project) => { %>
       <article class="project-card">
-        <h2><%= project.name %></h2>
-        <p><%= project.summary %></p>
+        <h2><%= project.title %></h2>
+        <p class="project-meta"><%= project.date %>: <%= project.title %> (<%= project.organization_name %>)</p>
+        <p><%= project.description %></p>
+        <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
       </article>
     <% }); %>
   </div>

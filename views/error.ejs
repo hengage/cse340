@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <h1>Server Error</h1>
+    <p>Sorry — something went wrong on the server.</p>
+    <% if (error) { %>
+      <pre><%= error %></pre>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/footer') %>
