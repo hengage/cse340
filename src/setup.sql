@@ -26,6 +26,12 @@ CREATE TABLE categories (
   description TEXT
 );
 
+CREATE TABLE project_categories (
+  project_id INTEGER REFERENCES projects(id),
+  category_id INTEGER REFERENCES categories(id),
+  PRIMARY KEY (project_id, category_id)
+);
+
 INSERT INTO organizations (name, description, image, website) VALUES
   ('Green Valley Alliance', 'A volunteer-led nonprofit focused on environmental restoration and community education.', 'environment.svg', 'https://green-valley.example.org'),
   ('Bright Futures Foundation', 'Programs that support educational opportunities and mentorship for youth.', 'education.svg', 'https://bright-futures.example.org'),
@@ -53,3 +59,8 @@ INSERT INTO categories (name, description) VALUES
   ('Educational', 'Programs supporting learning and mentoring.'),
   ('Community Service', 'Local community support and volunteer events.'),
   ('Health and Wellness', 'Events promoting health and wellbeing');
+
+INSERT INTO project_categories (project_id, category_id) VALUES
+  (1, 1), (2, 1), (3, 1), (4, 1), (5, 1),
+  (6, 2), (7, 2), (8, 2), (9, 2), (10, 2),
+  (11, 4), (12, 3), (13, 3), (14, 3), (15, 3);

@@ -8,9 +8,11 @@
   <div class="grid cards-grid">
     <% organizations.forEach((organization) => { %>
       <article class="card">
-        <img src="/images/<%= organization.image %>" alt="Logo for <%= organization.name %>" />
+        <a href="/organization/<%= organization.id %>">
+          <img src="/images/<%= organization.image %>" alt="Logo for <%= organization.name %>" />
+        </a>
         <div class="card-body">
-          <h2><%= organization.name %></h2>
+          <h2><a href="/organization/<%= organization.id %>"><%= organization.name %></a></h2>
           <p><%= organization.description %></p>
         </div>
       </article>

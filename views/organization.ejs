@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Organization details</p>
+    <h1><%= organization.name %></h1>
+    <p><%= organization.description %></p>
+    <% if (organization.website) { %>
+      <p><a href="<%= organization.website %>" target="_blank" rel="noopener noreferrer">Visit website</a></p>
+    <% } %>
+  </div>
+  <div class="project-list">
+    <h2>Projects for <%= organization.name %></h2>
+    <% if (projects.length === 0) { %>
+      <p>No projects are currently listed for this organization.</p>
+    <% } %>
+    <% projects.forEach((project) => { %>
+      <article class="project-card">
+        <h3><a href="/project/<%= project.project_id %>"><%= project.title %></a></h3>
+        <p><strong>Date:</strong> <%= project.date %></p>
+        <p><strong>Location:</strong> <%= project.location %></p>
+      </article>
+    <% }); %>
+  </div>
+</section>
+<%- include('partials/footer') %>
