@@ -60,10 +60,10 @@ export async function showNewCategoryForm(req, res) {
 
 export async function processNewCategoryForm(req, res, next) {
   try {
-    const { name } = req.body;
+    const name = (req.body.name || '').trim();
     
     // Server-side validation
-    if (!name || name.length < 3 || name.length > 100) {
+    if (name.length < 3 || name.length > 100) {
       return res.status(400).render('new-category', {
         title: 'New Category',
         siteName,
@@ -97,10 +97,10 @@ export async function showEditCategoryForm(req, res, next) {
 export async function processEditCategoryForm(req, res, next) {
   try {
     const categoryId = Number(req.params.id);
-    const { name } = req.body;
+    const name = (req.body.name || '').trim();
 
     // Server-side validation
-    if (!name || name.length < 3 || name.length > 100) {
+    if (name.length < 3 || name.length > 100) {
       const category = await getCategoryById(categoryId);
       if (!category) {
         return res.status(404).render('error', {
