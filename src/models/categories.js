@@ -33,3 +33,22 @@ export async function getProjectsForCategory(categoryId) {
   const result = await db.query(query, [categoryId]);
   return result.rows;
 }
+
+export async function createCategory(name) {
+  const result = await db.query(
+    'INSERT INTO categories (name) VALUES ($1) RETURNING id',
+    [name]
+  );
+  return result.rows[0].id;
+}
+
+export async function updateCategory(id, name) {
+  const result = await db.query(
+    'UPDATE categories SET name = $1 WHERE id = $2 RETURNING id',
+    [name, id]
+  );
+  if (result.rowCount === 0) {
+    throw new Error('Category not found');
+  }
+  return result.rows[0].id;
+}

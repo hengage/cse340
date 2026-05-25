@@ -4,6 +4,7 @@
     <p class="eyebrow">Service categories</p>
     <h1>Categories</h1>
     <p>Choose a category that matches your interests and explore related opportunities.</p>
+    <a href="/new-category" class="button">Create New Category</a>
   </div>
   <ul class="category-list">
     <% categories.forEach((category) => { %>
@@ -12,6 +13,7 @@
         <div class="card-content">
           <h3><%= category.name %></h3>
           <p><%= category.description %></p>
+          <a href="/edit-category/<%= category.id %>" class="button-secondary">Edit</a>
         </div>
       </li>
     <% }); %>
