@@ -143,12 +143,19 @@ h1 {
 .button {
   background: #0f766e;
   color: #ffffff;
+  padding: 0.75rem 1.4rem;
 }
 
 .button-secondary {
   background: #f8fafc;
   color: #0f766e;
   border: 1px solid #d1d5db;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 
 .button:hover,
@@ -232,7 +239,6 @@ h1 {
   display: block;
 }
 
-/* Ensure sub-links within cards are clickable and above the card-link */
 .card-style a:not(.card-link) {
   position: relative;
   z-index: 20;
@@ -261,14 +267,12 @@ h1 {
   display: block;
 }
 
-/* Ensure sub-links within cards are clickable and above the card-link */
 .card-style a:not(.card-link) {
   position: relative;
   z-index: 20;
   cursor: pointer;
 }
 
-/* Explicitly ensure card content is above card-link and respects z-index */
 .card-style .card-content {
   position: relative;
   z-index: 5;

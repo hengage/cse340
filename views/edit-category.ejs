@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Edit category</p>
+    <h1>Edit <%= category.name %></h1>
+  </div>
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+  <form action="/edit-category/<%= category.id %>" method="POST" class="project-form">
+    <p>
+      <label for="name">Category Name:</label>
+      <input type="text" id="name" name="name" value="<%= category.name %>" required maxlength="100">
+    </p>
+    <button type="submit" class="button">Update Category</button>
+  </form>
+</section>
+<%- include('partials/footer') %>
