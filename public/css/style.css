@@ -149,6 +149,12 @@ h1 {
   background: #f8fafc;
   color: #0f766e;
   border: 1px solid #d1d5db;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 
 .button:hover,
