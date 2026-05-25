@@ -143,6 +143,7 @@ h1 {
 .button {
   background: #0f766e;
   color: #ffffff;
+  padding: 0.75rem 1.4rem;
 }
 
 .button-secondary {
@@ -238,7 +239,6 @@ h1 {
   display: block;
 }
 
-/* Ensure sub-links within cards are clickable and above the card-link */
 .card-style a:not(.card-link) {
   position: relative;
   z-index: 20;
@@ -267,14 +267,12 @@ h1 {
   display: block;
 }
 
-/* Ensure sub-links within cards are clickable and above the card-link */
 .card-style a:not(.card-link) {
   position: relative;
   z-index: 20;
   cursor: pointer;
 }
 
-/* Explicitly ensure card content is above card-link and respects z-index */
 .card-style .card-content {
   position: relative;
   z-index: 5;
