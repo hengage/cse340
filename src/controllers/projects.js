@@ -78,9 +78,17 @@ export async function processEditProjectForm(req, res, next) {
   try {
     const projectId = Number(req.params.id);
     const { organization_id, title, description, location, date } = req.body;
+    
     await updateProject(projectId, organization_id, title, description, location, date);
     res.redirect(`/project/${projectId}`);
   } catch (error) {
+    if (error.message === 'Project not found') {
+      return res.status(404).render('error', {
+        title: 'Project Not Found',
+        siteName,
+        error: 'The project you are trying to update no longer exists.'
+      });
+    }
     next(error);
   }
 }
