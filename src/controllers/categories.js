@@ -102,6 +102,13 @@ export async function processEditCategoryForm(req, res, next) {
     // Server-side validation
     if (!name || name.length < 3 || name.length > 100) {
       const category = await getCategoryById(categoryId);
+      if (!category) {
+        return res.status(404).render('error', {
+          title: 'Category Not Found',
+          siteName,
+          error: 'The category you are trying to update no longer exists.'
+        });
+      }
       return res.status(400).render('edit-category', {
         title: 'Edit Category',
         siteName,
