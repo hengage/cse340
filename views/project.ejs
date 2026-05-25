@@ -20,6 +20,9 @@
         <a href="/category/<%= category.id %>" class="category-tag"><%= category.name %></a>
       <% }); %>
     </p>
+    <p>
+      <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
+    </p>
   </div>
 </section>
 <%- include('partials/footer') %>

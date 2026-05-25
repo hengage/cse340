@@ -137,6 +137,7 @@ h1 {
 .button-secondary,
 .link-button {
   border: none;
+  cursor: pointer;
 }
 
 .button {
@@ -250,7 +251,6 @@ h1 {
   font-weight: 600;
 }
 
-
 .card-link {
   position: absolute;
   top: 0;
@@ -289,14 +289,47 @@ h1 {
   /* border-radius inherited */
 }
 
-
-
-.site-footer {
-  border-top: 1px solid #e5e7eb;
-  padding: 1.5rem;
-  text-align: center;
+/* Form Styles */
+.project-form {
   background: #ffffff;
-  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 600px;
+}
+
+.project-form p {
+  margin-bottom: 1.5rem;
+}
+
+.project-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.project-form input,
+.project-form select,
+.project-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.project-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.project-form input:focus,
+.project-form select:focus,
+.project-form textarea:focus {
+  outline: 2px solid #0f766e;
+  border-color: transparent;
 }
 
 @media (min-width: 768px) {
