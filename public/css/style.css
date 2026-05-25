@@ -137,6 +137,7 @@ h1 {
 .button-secondary,
 .link-button {
   border: none;
+  cursor: pointer;
 }
 
 .button {
@@ -250,7 +251,6 @@ h1 {
   font-weight: 600;
 }
 
-
 .card-link {
   position: absolute;
   top: 0;
@@ -288,8 +288,6 @@ h1 {
   font-weight: 600;
   /* border-radius inherited */
 }
-
-
 
 .site-footer {
   border-top: 1px solid #e5e7eb;
