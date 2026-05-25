@@ -54,6 +54,14 @@ export async function showProjectDetailsPage(req, res, next) {
 export async function showEditProjectForm(req, res, next) {
   try {
     const projectId = Number(req.params.id);
+    if (Number.isNaN(projectId)) {
+      return res.status(400).render('error', {
+        title: 'Invalid Project',
+        siteName,
+        error: 'Invalid project ID.'
+      });
+    }
+
     const project = await getProjectDetails(projectId);
     if (!project) {
       return res.status(404).render('error', {
