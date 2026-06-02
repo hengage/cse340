@@ -129,21 +129,3 @@ export async function processEditCategoryForm(req, res, next) {
     next(error);
   }
 }
-
-      return res.status(400).render('edit-category', {
-        title: 'Edit Category',
-        siteName,
-        category,
-        error: 'Category name must be between 3 and 100 characters.'
-      });
-    }
-
-    await updateCategory(categoryId, name);
-    res.redirect('/categories');
-  } catch (error) {
-    if (error.message === 'Category not found') {
-      return res.status(404).render('error', { title: 'Category Not Found', siteName, error: 'Not found' });
-    }
-    next(error);
-  }
-}
