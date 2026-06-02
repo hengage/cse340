@@ -10,7 +10,7 @@
   <form action="/new-project" method="POST" class="project-form">
     <p>
       <label for="title">Title:</label>
-      <input type="text" id="title" name="title" required maxlength="100">
+      <input type="text" id="title" name="title" required maxlength="100" minlength="3">
     </p>
     <p>
       <label for="organization_id">Organization:</label>
@@ -26,11 +26,11 @@
     </p>
     <p>
       <label for="location">Location:</label>
-      <input type="text" id="location" name="location" required>
+      <input type="text" id="location" name="location" required maxlength="100">
     </p>
     <p>
       <label for="description">Description:</label>
-      <textarea id="description" name="description" required></textarea>
+      <textarea id="description" name="description" required maxlength="500"></textarea>
     </p>
     <button type="submit" class="button">Create Project</button>
   </form>

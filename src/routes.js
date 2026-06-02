@@ -9,7 +9,14 @@ import {
   showAssignCategoriesForm,
   processAssignCategoriesForm
 } from './controllers/projects.js';
-import { showOrganizationsPage, showOrganizationDetailsPage } from './controllers/organizations.js';
+import { 
+  showOrganizationsPage, 
+  showOrganizationDetailsPage,
+  showNewOrganizationForm,
+  processNewOrganizationForm,
+  showEditOrganizationForm,
+  processEditOrganizationForm
+} from './controllers/organizations.js';
 import { 
   showCategoriesPage, 
   showCategoryDetailsPage, 
@@ -23,6 +30,11 @@ const router = express.Router();
 
 router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
+router.get('/new-organization', showNewOrganizationForm);
+router.post('/new-organization', express.urlencoded({ extended: true }), processNewOrganizationForm);
+router.get('/edit-organization/:id', showEditOrganizationForm);
+router.post('/edit-organization/:id', express.urlencoded({ extended: true }), processEditOrganizationForm);
+
 router.get('/projects', showProjectsPage);
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/new-project', showNewProjectForm);
@@ -40,4 +52,5 @@ router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', express.urlencoded({ extended: true }), processEditCategoryForm);
 
 export default router;
+
 

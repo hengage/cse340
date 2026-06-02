@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Edit organization</p>
+    <h1>Edit <%= organization.name %></h1>
+  </div>
+  <% if (typeof error !== 'undefined') { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+  <form action="/edit-organization/<%= organization.id %>" method="POST" class="project-form">
+    <p>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" value="<%= organization.name %>" required maxlength="150">
+    </p>
+    <p>
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required><%= organization.description %></textarea>
+    </p>
+    <p>
+      <label for="image">Logo Filename:</label>
+      <input type="text" id="image" name="image" value="<%= organization.image %>" required maxlength="255">
+    </p>
+    <p>
+      <label for="website">Website:</label>
+      <input type="url" id="website" name="website" value="<%= organization.website %>" maxlength="255">
+    </p>
+    <button type="submit" class="button">Update Organization</button>
+  </form>
+</section>
+<%- include('partials/footer') %>
