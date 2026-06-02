@@ -87,3 +87,31 @@ export async function updateProject(id, organization_id, title, description, loc
   }
   return result.rows[0];
 }
+
+export async function createProject(organization_id, title, description, location, date) {
+  const result = await db.query(
+    'INSERT INTO projects (organization_id, title, description, location, date) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+    [organization_id, title, description, location, date]
+  );
+  return result.rows[0].id;
+}
+
+export async function getProjectCategories(projectId) {
+  const query = `
+    SELECT c.id, c.name, 
+           EXISTS (SELECT 1 FROM project_categories pc WHERE pc.project_id = $1 AND pc.category_id = c.id) as is_assigned
+    FROM categories c
+    ORDER BY c.name;
+  `;
+  const result = await db.query(query, [projectId]);
+  return result.rows;
+}
+
+export async function updateProjectCategories(projectId, categoryIds) {
+  await db.query('DELETE FROM project_categories WHERE project_id = $1', [projectId]);
+  if (categoryIds && categoryIds.length > 0) {
+    const values = categoryIds.map((_, i) => `($1, $${i + 2})`).join(',');
+    const query = `INSERT INTO project_categories (project_id, category_id) VALUES ${values}`;
+    await db.query(query, [projectId, ...categoryIds]);
+  }
+}

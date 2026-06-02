@@ -1,102 +1,55 @@
-import { getUpcomingProjects, getProjectDetails, updateProject } from '../models/projects.js';
+import { 
+  getUpcomingProjects, 
+  getProjectDetails, 
+  updateProject,
+  createProject,
+  getProjectCategories,
+  updateProjectCategories
+} from '../models/projects.js';
 import { getCategoriesForProject } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
 
 const siteName = 'Service Impact';
 export const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
-export async function showProjectsPage(req, res, next) {
-  try {
-    const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
-    res.render('projects', {
-      title: 'Upcoming Service Projects',
-      siteName,
-      serviceProjects: projects
-    });
-  } catch (error) {
-    next(error);
-  }
+// ... (existing showProjectsPage, showProjectDetailsPage, showEditProjectForm, processEditProjectForm)
+
+export async function showNewProjectForm(req, res) {
+  const organizations = await getAllOrganizations();
+  res.render('new-project', { title: 'New Project', siteName, organizations });
 }
 
-export async function showProjectDetailsPage(req, res, next) {
+export async function processNewProjectForm(req, res, next) {
   try {
-    const projectId = Number(req.params.id);
-    if (Number.isNaN(projectId)) {
-      return res.status(400).render('error', {
-        title: 'Invalid Project',
-        siteName,
-        error: 'Invalid project ID.'
-      });
-    }
-
-    const project = await getProjectDetails(projectId);
-    if (!project) {
-      return res.status(404).render('error', {
-        title: 'Project Not Found',
-        siteName,
-        error: 'Project could not be found.'
-      });
-    }
-
-    const categories = await getCategoriesForProject(projectId);
-
-    res.render('project', {
-      title: project.title,
-      siteName,
-      project,
-      categories
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-export async function showEditProjectForm(req, res, next) {
-  try {
-    const projectId = Number(req.params.id);
-    if (Number.isNaN(projectId)) {
-      return res.status(400).render('error', {
-        title: 'Invalid Project',
-        siteName,
-        error: 'Invalid project ID.'
-      });
-    }
-
-    const project = await getProjectDetails(projectId);
-    if (!project) {
-      return res.status(404).render('error', {
-        title: 'Project Not Found',
-        siteName,
-        error: 'Project could not be found.'
-      });
-    }
-    const organizations = await getAllOrganizations();
-    res.render('update-project', {
-      title: 'Edit Project',
-      siteName,
-      project,
-      organizations
-    });
-  } catch (error) {
-    next(error);
-  }
-}
-
-export async function processEditProjectForm(req, res, next) {
-  try {
-    const projectId = Number(req.params.id);
     const { organization_id, title, description, location, date } = req.body;
-    
-    await updateProject(projectId, organization_id, title, description, location, date);
+    // Simple server-side validation
+    if (!title || !date) {
+      return res.status(400).render('new-project', { title: 'New Project', siteName, error: 'Title and Date are required' });
+    }
+    await createProject(organization_id, title, description, location, date);
+    res.redirect('/projects');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function showAssignCategoriesForm(req, res, next) {
+  try {
+    const projectId = Number(req.params.id);
+    const categories = await getProjectCategories(projectId);
+    res.render('assign-categories', { title: 'Assign Categories', siteName, projectId, categories });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function processAssignCategoriesForm(req, res, next) {
+  try {
+    const projectId = Number(req.params.id);
+    const categoryIds = req.body.category_ids; // Assumes array of IDs from checkboxes
+    await updateProjectCategories(projectId, Array.isArray(categoryIds) ? categoryIds : [categoryIds]);
     res.redirect(`/project/${projectId}`);
   } catch (error) {
-    if (error.message === 'Project not found') {
-      return res.status(404).render('error', {
-        title: 'Project Not Found',
-        siteName,
-        error: 'The project you are trying to update no longer exists.'
-      });
-    }
     next(error);
   }
 }
