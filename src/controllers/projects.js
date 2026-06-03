@@ -169,8 +169,13 @@ export async function showAssignCategoriesForm(req, res, next) {
 export async function processAssignCategoriesForm(req, res, next) {
   try {
     const projectId = Number(req.params.id);
-    const categoryIds = req.body.category_ids; // Assumes array of IDs from checkboxes
-    await updateProjectCategories(projectId, Array.isArray(categoryIds) ? categoryIds : [categoryIds]);
+    // Ensure categoryIds is always an array, defaulting to empty if undefined/null
+    let categoryIds = req.body.category_ids || [];
+    if (!Array.isArray(categoryIds)) {
+      categoryIds = [categoryIds];
+    }
+    
+    await updateProjectCategories(projectId, categoryIds);
     res.redirect(`/project/${projectId}`);
   } catch (error) {
     next(error);
