@@ -104,8 +104,8 @@ export async function processNewProjectForm(req, res, next) {
         error: 'Title must be 3-100 characters and Date is required.' 
       });
     }
-    await createProject(organization_id, title, description, location, date);
-    res.redirect('/projects');
+    const newProjectId = await createProject(organization_id, title, description, location, date);
+    res.redirect(`/project/${newProjectId}`);
   } catch (error) {
     next(error);
   }
