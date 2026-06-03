@@ -72,34 +72,18 @@ export async function processNewCategoryForm(req, res, next) {
     }
 
     await createCategory(name);
+    req.flash('message', 'Category created successfully.');
     res.redirect('/categories');
   } catch (error) {
     next(error);
   }
 }
 
-export async function showEditCategoryForm(req, res, next) {
-  try {
-    const categoryId = Number(req.params.id);
-    if (Number.isNaN(categoryId)) {
-      return res.status(400).render('error', { title: 'Invalid Category', siteName, error: 'Invalid ID' });
-    }
-    const category = await getCategoryById(categoryId);
-    if (!category) {
-      return res.status(404).render('error', { title: 'Category Not Found', siteName, error: 'Not found' });
-    }
-    res.render('edit-category', { title: 'Edit Category', siteName, category });
-  } catch (error) {
-    next(error);
-  }
-}
+// ... (showEditCategoryForm)
 
 export async function processEditCategoryForm(req, res, next) {
   try {
     const categoryId = Number(req.params.id);
-    if (Number.isNaN(categoryId)) {
-      return res.status(400).render('error', { title: 'Invalid Category', siteName, error: 'Invalid ID' });
-    }
     const name = req.body.name ? req.body.name.trim() : '';
 
     // Server-side validation
@@ -121,11 +105,28 @@ export async function processEditCategoryForm(req, res, next) {
     }
 
     await updateCategory(categoryId, name);
+    req.flash('message', 'Category updated successfully.');
     res.redirect('/categories');
   } catch (error) {
     if (error.message === 'Category not found') {
       return res.status(404).render('error', { title: 'Category Not Found', siteName, error: 'Not found' });
     }
+    next(error);
+  }
+}
+
+export async function showEditCategoryForm(req, res, next) {
+  try {
+    const categoryId = Number(req.params.id);
+    if (Number.isNaN(categoryId)) {
+      return res.status(400).render('error', { title: 'Invalid Category', siteName, error: 'Invalid ID' });
+    }
+    const category = await getCategoryById(categoryId);
+    if (!category) {
+      return res.status(404).render('error', { title: 'Category Not Found', siteName, error: 'Not found' });
+    }
+    res.render('edit-category', { title: 'Edit Category', siteName, category });
+  } catch (error) {
     next(error);
   }
 }

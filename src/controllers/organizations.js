@@ -65,20 +65,8 @@ export async function processNewOrganizationForm(req, res, next) {
       });
     }
     await createOrganization(name, description, image, website);
+    req.flash('message', 'Organization created successfully.');
     res.redirect('/organizations');
-  } catch (error) {
-    next(error);
-  }
-}
-
-export async function showEditOrganizationForm(req, res, next) {
-  try {
-    const organizationId = Number(req.params.id);
-    const organization = await getOrganizationDetails(organizationId);
-    if (!organization) {
-      return res.status(404).render('error', { title: 'Organization Not Found', siteName, error: 'Not found' });
-    }
-    res.render('edit-organization', { title: 'Edit Organization', siteName, organization });
   } catch (error) {
     next(error);
   }
@@ -99,7 +87,21 @@ export async function processEditOrganizationForm(req, res, next) {
       });
     }
     await updateOrganization(organizationId, name, description, image, website);
+    req.flash('message', 'Organization updated successfully.');
     res.redirect(`/organization/${organizationId}`);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function showEditOrganizationForm(req, res, next) {
+  try {
+    const organizationId = Number(req.params.id);
+    const organization = await getOrganizationDetails(organizationId);
+    if (!organization) {
+      return res.status(404).render('error', { title: 'Organization Not Found', siteName, error: 'Not found' });
+    }
+    res.render('edit-organization', { title: 'Edit Organization', siteName, organization });
   } catch (error) {
     next(error);
   }

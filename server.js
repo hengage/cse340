@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import session from 'express-session';
+import flash from 'connect-flash';
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
 
@@ -13,6 +15,19 @@ const publicPath = path.join(__dirname, 'public');
 const viewsPath = path.join(__dirname, 'views');
 
 app.use(express.static(publicPath));
+app.use(session({
+  secret: 'your-secret-key', // In production, use a secure random string
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(flash());
+
+// Make flash messages available to all templates
+app.use((req, res, next) => {
+  res.locals.message = req.flash('message');
+  next();
+});
+
 app.set('view engine', 'ejs');
 app.set('views', viewsPath);
 

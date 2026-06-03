@@ -21,6 +21,9 @@
         <a href="/categories">Categories</a>
       </nav>
     </header>
-    <main class="page-content"></main>
+    <main class="page-content">
+      <% if (message && message.length > 0) { %>
+        <div class="flash-message"><%= message %></div>
+      <% } %>
   </body>
 </html>

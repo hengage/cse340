@@ -105,6 +105,7 @@ export async function processNewProjectForm(req, res, next) {
       });
     }
     const newProjectId = await createProject(organization_id, title, description, location, date);
+    req.flash('message', 'Project created successfully.');
     res.redirect(`/project/${newProjectId}`);
   } catch (error) {
     next(error);
@@ -138,6 +139,7 @@ export async function processEditProjectForm(req, res, next) {
     }
     
     await updateProject(projectId, organization_id, title, description, location, date);
+    req.flash('message', 'Project updated successfully.');
     res.redirect(`/project/${projectId}`);
   } catch (error) {
     if (error.message === 'Project not found') {
@@ -147,6 +149,23 @@ export async function processEditProjectForm(req, res, next) {
         error: 'The project you are trying to update no longer exists.'
       });
     }
+    next(error);
+  }
+}
+
+export async function processAssignCategoriesForm(req, res, next) {
+  try {
+    const projectId = Number(req.params.id);
+    // Ensure categoryIds is always an array, defaulting to empty if undefined/null
+    let categoryIds = req.body.category_ids || [];
+    if (!Array.isArray(categoryIds)) {
+      categoryIds = [categoryIds];
+    }
+    
+    await updateProjectCategories(projectId, categoryIds);
+    req.flash('message', 'Categories updated successfully.');
+    res.redirect(`/project/${projectId}`);
+  } catch (error) {
     next(error);
   }
 }
@@ -165,22 +184,6 @@ export async function showAssignCategoriesForm(req, res, next) {
     const projectId = Number(req.params.id);
     const categories = await getProjectCategories(projectId);
     res.render('assign-categories', { title: 'Assign Categories', siteName, projectId, categories });
-  } catch (error) {
-    next(error);
-  }
-}
-
-export async function processAssignCategoriesForm(req, res, next) {
-  try {
-    const projectId = Number(req.params.id);
-    // Ensure categoryIds is always an array, defaulting to empty if undefined/null
-    let categoryIds = req.body.category_ids || [];
-    if (!Array.isArray(categoryIds)) {
-      categoryIds = [categoryIds];
-    }
-    
-    await updateProjectCategories(projectId, categoryIds);
-    res.redirect(`/project/${projectId}`);
   } catch (error) {
     next(error);
   }
