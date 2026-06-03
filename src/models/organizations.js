@@ -15,6 +15,25 @@ export async function getOrganizationDetails(id) {
   return result.rows[0] ?? null;
 }
 
+export async function createOrganization(name, description, image, website) {
+  const result = await db.query(
+    'INSERT INTO organizations (name, description, image, website) VALUES ($1, $2, $3, $4) RETURNING id',
+    [name, description, image, website]
+  );
+  return result.rows[0].id;
+}
+
+export async function updateOrganization(id, name, description, image, website) {
+  const result = await db.query(
+    'UPDATE organizations SET name = $1, description = $2, image = $3, website = $4 WHERE id = $5 RETURNING id',
+    [name, description, image, website, id]
+  );
+  if (result.rowCount === 0) {
+    throw new Error('Organization not found');
+  }
+  return result.rows[0].id;
+}
+
 export async function getProjectsByOrganization(id) {
   const query = `
     SELECT p.id AS project_id,

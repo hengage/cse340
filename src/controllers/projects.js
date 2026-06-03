@@ -1,4 +1,11 @@
-import { getUpcomingProjects, getProjectDetails, updateProject } from '../models/projects.js';
+import { 
+  getUpcomingProjects, 
+  getProjectDetails, 
+  updateProject,
+  createProject,
+  getProjectCategories,
+  updateProjectCategories
+} from '../models/projects.js';
 import { getCategoriesForProject } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
 
@@ -82,10 +89,53 @@ export async function showEditProjectForm(req, res, next) {
   }
 }
 
+export async function processNewProjectForm(req, res, next) {
+  try {
+    const title = (req.body.title || '').trim();
+    const { organization_id, description, location, date } = req.body;
+    
+    // Server-side validation
+    if (title.length < 3 || title.length > 100 || !date) {
+      const organizations = await getAllOrganizations();
+      return res.status(400).render('new-project', { 
+        title: 'New Project', 
+        siteName, 
+        organizations,
+        error: 'Title must be 3-100 characters and Date is required.' 
+      });
+    }
+    const newProjectId = await createProject(organization_id, title, description, location, date);
+    res.redirect(`/project/${newProjectId}`);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function processEditProjectForm(req, res, next) {
   try {
     const projectId = Number(req.params.id);
-    const { organization_id, title, description, location, date } = req.body;
+    const title = (req.body.title || '').trim();
+    const { organization_id, description, location, date } = req.body;
+
+    // Server-side validation
+    if (title.length < 3 || title.length > 100 || !date) {
+      const project = await getProjectDetails(projectId);
+      const organizations = await getAllOrganizations();
+      if (!project) {
+        return res.status(404).render('error', {
+          title: 'Project Not Found',
+          siteName,
+          error: 'The project you are trying to update no longer exists.'
+        });
+      }
+      return res.status(400).render('update-project', {
+        title: 'Edit Project',
+        siteName,
+        project,
+        organizations,
+        error: 'Title must be 3-100 characters and Date is required.'
+      });
+    }
     
     await updateProject(projectId, organization_id, title, description, location, date);
     res.redirect(`/project/${projectId}`);
@@ -97,6 +147,41 @@ export async function processEditProjectForm(req, res, next) {
         error: 'The project you are trying to update no longer exists.'
       });
     }
+    next(error);
+  }
+}
+
+export async function showNewProjectForm(req, res, next) {
+  try {
+    const organizations = await getAllOrganizations();
+    res.render('new-project', { title: 'New Project', siteName, organizations });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function showAssignCategoriesForm(req, res, next) {
+  try {
+    const projectId = Number(req.params.id);
+    const categories = await getProjectCategories(projectId);
+    res.render('assign-categories', { title: 'Assign Categories', siteName, projectId, categories });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function processAssignCategoriesForm(req, res, next) {
+  try {
+    const projectId = Number(req.params.id);
+    // Ensure categoryIds is always an array, defaulting to empty if undefined/null
+    let categoryIds = req.body.category_ids || [];
+    if (!Array.isArray(categoryIds)) {
+      categoryIds = [categoryIds];
+    }
+    
+    await updateProjectCategories(projectId, categoryIds);
+    res.redirect(`/project/${projectId}`);
+  } catch (error) {
     next(error);
   }
 }
