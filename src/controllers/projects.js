@@ -151,9 +151,13 @@ export async function processEditProjectForm(req, res, next) {
   }
 }
 
-export async function showNewProjectForm(req, res) {
-  const organizations = await getAllOrganizations();
-  res.render('new-project', { title: 'New Project', siteName, organizations });
+export async function showNewProjectForm(req, res, next) {
+  try {
+    const organizations = await getAllOrganizations();
+    res.render('new-project', { title: 'New Project', siteName, organizations });
+  } catch (error) {
+    next(error);
+  }
 }
 
 export async function showAssignCategoriesForm(req, res, next) {

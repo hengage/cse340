@@ -1,4 +1,5 @@
 import db from './db.js';
+import { pool } from '../db/index.js'; // Import pool for transactions
 
 const formatProject = (row) => ({
   project_id: row.project_id,
@@ -108,10 +109,21 @@ export async function getProjectCategories(projectId) {
 }
 
 export async function updateProjectCategories(projectId, categoryIds) {
-  await db.query('DELETE FROM project_categories WHERE project_id = $1', [projectId]);
-  if (categoryIds && categoryIds.length > 0) {
-    const values = categoryIds.map((_, i) => `($1, $${i + 2})`).join(',');
-    const query = `INSERT INTO project_categories (project_id, category_id) VALUES ${values}`;
-    await db.query(query, [projectId, ...categoryIds]);
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM project_categories WHERE project_id = $1', [projectId]);
+    if (categoryIds && categoryIds.length > 0) {
+      const values = categoryIds.map((_, i) => `($1, $${i + 2})`).join(',');
+      const query = `INSERT INTO project_categories (project_id, category_id) VALUES ${values}`;
+      await client.query(query, [projectId, ...categoryIds]);
+    }
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
   }
 }
+
