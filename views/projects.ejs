@@ -4,18 +4,22 @@
     <p class="eyebrow">Volunteer opportunities</p>
     <h1>Projects</h1>
     <p>Each project is designed to help community members connect and contribute where it matters most.</p>
+    <a href="/new-project" class="button">Create New Project</a>
   </div>
   <div class="project-list">
     <% serviceProjects.forEach((project) => { %>
       <article class="project-card card-style">
         <a href="/project/<%= project.project_id %>" class="card-link"></a>
-        <h2><%= project.title %></h2>
-        <p class="project-meta">
-          <%= project.date %>: <%= project.title %> 
-          ( <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a> )
-        </p>
-        <p><%= project.description %></p>
-        <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
+        <div class="card-content">
+          <h2><%= project.title %></h2>
+          <p class="project-meta">
+            <%= project.date %>: <%= project.title %> 
+            ( <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a> )
+          </p>
+          <p><%= project.description %></p>
+          <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
+          <a href="/edit-project/<%= project.project_id %>" class="button-secondary">Edit</a>
+        </div>
       </article>
     <% }); %>
   </div>
