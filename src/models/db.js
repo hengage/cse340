@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import { Pool } from 'pg';
 
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DATABASE_URL || process.env.DB_URL;
 
 if (!dbUrl) {
-  throw new Error('DB_URL is not set. Please add DB_URL to your .env file or environment.');
+  throw new Error('DATABASE_URL or DB_URL is not set. Please add it to your .env file or environment.');
 }
 
 const useSsl = process.env.DB_DISABLE_SSL !== 'true' && !/(localhost|127\.0\.0\.1)/i.test(dbUrl);
@@ -57,4 +57,4 @@ const testConnection = async () => {
   }
 };
 
-export { db as default, testConnection };
+export { db as default, testConnection, pool };
