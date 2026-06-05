@@ -25,6 +25,10 @@ import {
   showEditCategoryForm,
   processEditCategoryForm
 } from './controllers/categories.js';
+import { 
+  showUserRegistrationForm, 
+  processUserRegistrationForm 
+} from './controllers/users.js';
 
 const router = express.Router();
 
@@ -50,6 +54,9 @@ router.get('/new-category', showNewCategoryForm);
 router.post('/new-category', express.urlencoded({ extended: true }), processNewCategoryForm);
 router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', express.urlencoded({ extended: true }), processEditCategoryForm);
+
+router.get('/register', showUserRegistrationForm);
+router.post('/register', express.urlencoded({ extended: true }), processUserRegistrationForm);
 
 export default router;
 
