@@ -27,7 +27,12 @@ import {
 } from './controllers/categories.js';
 import { 
   showUserRegistrationForm, 
-  processUserRegistrationForm 
+  processUserRegistrationForm,
+  showLoginForm,
+  processLoginForm,
+  processLogout,
+  requireLogin,
+  showDashboard
 } from './controllers/users.js';
 
 const router = express.Router();
@@ -57,6 +62,13 @@ router.post('/edit-category/:id', express.urlencoded({ extended: true }), proces
 
 router.get('/register', showUserRegistrationForm);
 router.post('/register', express.urlencoded({ extended: true }), processUserRegistrationForm);
+
+router.get('/login', showLoginForm);
+router.post('/login', express.urlencoded({ extended: true }), processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;
 

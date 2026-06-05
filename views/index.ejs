@@ -39,4 +39,9 @@
     <a href="/categories" class="link-button">View categories</a>
   </article>
 </section>
+<% if (isLoggedIn) { %>
+  <section class="page-section">
+    <a href="/dashboard" class="link-button">My Dashboard</a>
+  </section>
+<% } %>
 <%- include('partials/footer') %>

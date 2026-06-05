@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, getUserByEmail } from '../models/users.js';
+import { createUser, getUserByEmail, authenticateUser } from '../models/users.js';
 
 const siteName = 'Service Impact';
 
@@ -66,4 +66,55 @@ export async function processUserRegistrationForm(req, res, next) {
   } catch (error) {
     next(error);
   }
+}
+
+export async function showLoginForm(req, res) {
+  res.render('login', { title: 'Login', siteName });
+}
+
+export async function processLoginForm(req, res, next) {
+  try {
+    const { email, password } = req.body;
+    
+    const user = await authenticateUser(email, password);
+    
+    if (user) {
+      req.session.user = user;
+      req.flash('message', 'Login successful!');
+      console.log('User logged in:', user);
+      res.redirect('/dashboard');
+    } else {
+      req.flash('error', 'Login failed. Please check your email and password.');
+      res.redirect('/login');
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function processLogout(req, res, next) {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('message', 'You have been logged out.');
+      res.redirect('/login');
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export function requireLogin(req, res, next) {
+  if (!req.session || !req.session.user) {
+    req.flash('error', 'You must be logged in to access that page.');
+    return res.redirect('/login');
+  }
+  next();
+}
+
+export async function showDashboard(req, res) {
+  const { name, email } = req.session.user;
+  res.render('dashboard', { title: 'Dashboard', siteName, name, email });
 }
