@@ -1,5 +1,5 @@
 import db from './db.js';
-import { pool } from '../db/index.js'; // Import pool for transactions
+import { pool } from './db.js'; // Import pool for transactions
 
 const formatProject = (row) => ({
   project_id: row.project_id,
