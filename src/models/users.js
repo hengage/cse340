@@ -54,3 +54,14 @@ export async function authenticateUser(email, password) {
   const { password_hash, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
+
+export async function getAllUsers() {
+  const query = `
+    SELECT u.user_id, u.name, u.email, r.role_name
+    FROM users u
+    LEFT JOIN roles r ON u.role_id = r.role_id
+    ORDER BY u.name
+  `;
+  const result = await db.query(query);
+  return result.rows;
+}

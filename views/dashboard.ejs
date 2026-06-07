@@ -7,6 +7,9 @@
   <div class="dashboard-content">
     <p><strong>Name:</strong> <%= name %></p>
     <p><strong>Email:</strong> <%= email %></p>
+    <% if (role_id === 2) { %>
+      <p><a href="/users" class="link-button">Manage Users</a></p>
+    <% } %>
   </div>
 </section>
 <%- include('partials/footer') %>

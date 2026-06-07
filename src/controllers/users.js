@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, getUserByEmail, authenticateUser } from '../models/users.js';
+import { createUser, getUserByEmail, authenticateUser, getAllUsers } from '../models/users.js';
 
 const siteName = 'Service Impact';
 
@@ -115,6 +115,32 @@ export function requireLogin(req, res, next) {
 }
 
 export async function showDashboard(req, res) {
-  const { name, email } = req.session.user;
-  res.render('dashboard', { title: 'Dashboard', siteName, name, email });
+  const { name, email, role_id } = req.session.user;
+  res.render('dashboard', { title: 'Dashboard', siteName, name, email, role_id });
+}
+
+export function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.session || !req.session.user) {
+      req.flash('error', 'You must be logged in to access that page.');
+      return res.redirect('/login');
+    }
+    
+    if (req.session.user.role_id !== 2) { // role_id 2 is admin
+      req.flash('error', 'You do not have permission to access that page.');
+      return res.redirect('/dashboard');
+    }
+    
+    next();
+  };
+}
+
+export async function showUsersList(req, res) {
+  try {
+    const users = await getAllUsers();
+    res.render('users', { title: 'Users', siteName, users });
+  } catch (error) {
+    req.flash('error', 'Error retrieving users.');
+    res.redirect('/dashboard');
+  }
 }
