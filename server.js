@@ -25,6 +25,16 @@ app.use(flash());
 // Make flash messages available to all templates
 app.use((req, res, next) => {
   res.locals.message = req.flash('message');
+  res.locals.error = req.flash('error');
+  
+  // Set isLoggedIn based on session user
+  res.locals.isLoggedIn = false;
+  res.locals.userRole = null;
+  if (req.session && req.session.user) {
+    res.locals.isLoggedIn = true;
+    res.locals.userRole = req.session.user.role_id;
+  }
+  
   next();
 });
 

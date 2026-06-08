@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<section class="page-section">
+  <div class="section-intro">
+    <p class="eyebrow">Welcome back</p>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="dashboard-content">
+    <p><strong>Name:</strong> <%= name %></p>
+    <p><strong>Email:</strong> <%= email %></p>
+    <% if (role_id === 2) { %>
+      <p><a href="/users" class="link-button">Manage Users</a></p>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/footer') %>
