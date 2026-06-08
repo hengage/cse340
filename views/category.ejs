@@ -4,7 +4,9 @@
     <p class="eyebrow">Category details</p>
     <h1><%= category.name %></h1>
     <p><%= category.description %></p>
-    <a href="/edit-category/<%= category.id %>" class="button">Edit Category</a>
+    <% if (isLoggedIn && userRole === 2) { %>
+      <a href="/edit-category/<%= category.id %>" class="button">Edit Category</a>
+    <% } %>
   </div>
   <ul class="project-list">
     <% projects.forEach((project) => { %>

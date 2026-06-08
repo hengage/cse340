@@ -19,12 +19,16 @@
       <% categories.forEach((category) => { %>
         <a href="/category/<%= category.id %>" class="category-tag"><%= category.name %></a>
       <% }); %>
-      <br>
-      <a href="/project/<%= project.project_id %>/assign-categories" class="button-secondary">Assign Categories</a>
+      <% if (isLoggedIn && userRole === 2) { %>
+        <br>
+        <a href="/project/<%= project.project_id %>/assign-categories" class="button-secondary">Assign Categories</a>
+      <% } %>
     </p>
-    <p>
-      <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
-    </p>
+    <% if (isLoggedIn && userRole === 2) { %>
+      <p>
+        <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
+      </p>
+    <% } %>
   </div>
 </section>
 <%- include('partials/footer') %>

@@ -13,9 +13,13 @@
         <div class="card-content">
           <h3><%= category.name %></h3>
           <p><%= category.description %></p>
+          <% if (isLoggedIn && userRole === 2) { %>
+            <a href="/edit-category/<%= category.id %>" class="button-secondary">Edit</a>
+          <% } %>
         </div>
       </li>
     <% }); %>
+
   </ul>
 </section>
 <%- include('partials/footer') %>
