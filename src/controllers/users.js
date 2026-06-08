@@ -94,11 +94,11 @@ export async function processLoginForm(req, res, next) {
 
 export async function processLogout(req, res, next) {
   try {
+    req.flash('message', 'You have been logged out.');
     req.session.destroy((err) => {
       if (err) {
         return next(err);
       }
-      req.flash('message', 'You have been logged out.');
       res.redirect('/login');
     });
   } catch (error) {
