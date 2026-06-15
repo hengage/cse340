@@ -30,8 +30,6 @@
       </p>
     <% } %>
 
-    </p>
-
     <% if (isLoggedIn) { %>
       <div class="volunteer-actions">
         <% if (isVolunteered) { %>
@@ -45,12 +43,6 @@
           </form>
         <% } %>
       </div>
-    <% } %>
-
-    <% if (isLoggedIn && userRole === 2) { %>
-      <p>
-        <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
-      </p>
     <% } %>
   </div>
 </section>

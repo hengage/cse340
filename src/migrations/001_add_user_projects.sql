@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS user_projects (
+  user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+  project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, project_id)
+);

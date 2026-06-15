@@ -1,5 +1,17 @@
 import db from './db.js';
 
+const formatVolunteerProject = (row) => ({
+  project_id: row.project_id,
+  title: row.title,
+  description: row.description,
+  location: row.location,
+  date: row.date ? new Date(row.date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }) : null
+});
+
 export async function addVolunteer(userId, projectId) {
   await db.query(
     'INSERT INTO user_projects (user_id, project_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
@@ -23,7 +35,7 @@ export async function getProjectsForUser(userId) {
     ORDER BY p.date ASC;
   `;
   const result = await db.query(query, [userId]);
-  return result.rows;
+  return result.rows.map(formatVolunteerProject);
 }
 
 export async function isUserVolunteered(userId, projectId) {

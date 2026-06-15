@@ -145,17 +145,8 @@ export function requireRole(role = 'admin') {
   };
 }
 
-    
-    if (req.session.user.role_name !== role) { // Assuming role_name is used now
-      req.flash('error', 'You do not have permission to access that page.');
-      return res.redirect('/dashboard');
-    }
-    
-    next();
-  };
-}
-
 export async function showUsersList(req, res) {
+
   try {
     const users = await getAllUsers();
     res.render('users', { title: 'Users', siteName, users });
