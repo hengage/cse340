@@ -4,7 +4,7 @@
     <p class="eyebrow">Volunteer opportunities</p>
     <h1>Projects</h1>
     <p>Each project is designed to help community members connect and contribute where it matters most.</p>
-    <% if (isLoggedIn && userRole === 2) { %>
+    <% if (isLoggedIn && user.role_name === 'admin') { %>
       <a href="/new-project" class="button">Create New Project</a>
     <% } %>
   </div>
@@ -20,7 +20,7 @@
           </p>
           <p><%= project.description %></p>
           <p class="project-location"><strong>Location:</strong> <%= project.location %></p>
-          <% if (isLoggedIn && userRole === 2) { %>
+          <% if (isLoggedIn && user.role_name === 'admin') { %>
             <a href="/edit-project/<%= project.project_id %>" class="button-secondary">Edit</a>
           <% } %>
         </div>

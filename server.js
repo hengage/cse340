@@ -29,10 +29,10 @@ app.use((req, res, next) => {
   
   // Set isLoggedIn based on session user
   res.locals.isLoggedIn = false;
-  res.locals.userRole = null;
+  res.locals.user = null;
   if (req.session && req.session.user) {
     res.locals.isLoggedIn = true;
-    res.locals.userRole = req.session.user.role_id;
+    res.locals.user = req.session.user;
   }
   
   next();

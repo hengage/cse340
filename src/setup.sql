@@ -1,4 +1,5 @@
 -- Drop existing tables so the setup script can be re-run during development.
+DROP TABLE IF EXISTS user_projects;
 DROP TABLE IF EXISTS project_categories;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS organizations;
@@ -33,6 +34,12 @@ CREATE TABLE project_categories (
   project_id INTEGER REFERENCES projects(id),
   category_id INTEGER REFERENCES categories(id),
   PRIMARY KEY (project_id, category_id)
+);
+
+CREATE TABLE user_projects (
+  user_id INTEGER REFERENCES users(user_id),
+  project_id INTEGER REFERENCES projects(id),
+  PRIMARY KEY (user_id, project_id)
 );
 
 CREATE TABLE roles (

@@ -19,11 +19,34 @@
       <% categories.forEach((category) => { %>
         <a href="/category/<%= category.id %>" class="category-tag"><%= category.name %></a>
       <% }); %>
-      <% if (isLoggedIn && userRole === 2) { %>
+      <% if (isLoggedIn && user.role_name === 'admin') { %>
         <br>
         <a href="/project/<%= project.project_id %>/assign-categories" class="button-secondary">Assign Categories</a>
       <% } %>
     </p>
+    <% if (isLoggedIn && user.role_name === 'admin') { %>
+      <p>
+        <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
+      </p>
+    <% } %>
+
+    </p>
+
+    <% if (isLoggedIn) { %>
+      <div class="volunteer-actions">
+        <% if (isVolunteered) { %>
+          <p>You are volunteering for this project.</p>
+          <form action="/project/<%= project.project_id %>/remove-volunteer" method="POST">
+            <button type="submit" class="button-secondary">Remove Volunteer Status</button>
+          </form>
+        <% } else { %>
+          <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+            <button type="submit" class="button">Volunteer for this Project</button>
+          </form>
+        <% } %>
+      </div>
+    <% } %>
+
     <% if (isLoggedIn && userRole === 2) { %>
       <p>
         <a href="/edit-project/<%= project.project_id %>" class="button">Edit Project</a>
