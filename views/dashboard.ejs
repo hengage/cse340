@@ -5,10 +5,28 @@
     <h1>Dashboard</h1>
   </div>
   <div class="dashboard-content">
-    <p><strong>Name:</strong> <%= name %></p>
-    <p><strong>Email:</strong> <%= email %></p>
-    <% if (role_id === 2) { %>
+    <p><strong>Name:</strong> <%= user.name %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <% if (user.role_name === 'admin') { %>
       <p><a href="/users" class="link-button">Manage Users</a></p>
+    <% } %>
+
+    <h2>Your Volunteered Projects</h2>
+    <% if (volunteeredProjects && volunteeredProjects.length > 0) { %>
+      <ul class="project-list" style="list-style: none; padding: 0;">
+        <% volunteeredProjects.forEach(project => { %>
+          <li class="card-style" style="margin-bottom: 1rem;">
+            <h3><%= project.title %></h3>
+            <p><strong>Date:</strong> <%= project.date %></p>
+            <p><strong>Location:</strong> <%= project.location %></p>
+            <form action="/project/<%= project.project_id %>/remove-volunteer" method="POST">
+              <button type="submit" class="button-secondary">Remove Volunteer Status</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>You haven't volunteered for any projects yet.</p>
     <% } %>
   </div>
 </section>

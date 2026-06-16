@@ -8,6 +8,7 @@ import {
 } from '../models/projects.js';
 import { getCategoriesForProject } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organizations.js';
+import { isUserVolunteered } from '../models/volunteers.js';
 
 const siteName = 'Service Impact';
 export const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -46,12 +47,18 @@ export async function showProjectDetailsPage(req, res, next) {
     }
 
     const categories = await getCategoriesForProject(projectId);
+    
+    let isVolunteered = false;
+    if (req.session.user) {
+      isVolunteered = await isUserVolunteered(req.session.user.user_id, projectId);
+    }
 
     res.render('project', {
       title: project.title,
       siteName,
       project,
-      categories
+      categories,
+      isVolunteered
     });
   } catch (error) {
     next(error);

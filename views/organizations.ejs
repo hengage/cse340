@@ -4,7 +4,7 @@
     <p class="eyebrow">Supporting service</p>
     <h1>Organizations</h1>
     <p>These organizations are making a positive impact through education, community support, and environmental stewardship.</p>
-    <% if (isLoggedIn && userRole === 2) { %>
+    <% if (isLoggedIn && user.role_name === 'admin') { %>
       <a href="/new-organization" class="button">Create New Organization</a>
     <% } %>
   </div>
@@ -17,7 +17,7 @@
         <div class="card-body">
           <h2><a href="/organization/<%= organization.id %>"><%= organization.name %></a></h2>
           <p><%= organization.description %></p>
-          <% if (isLoggedIn && userRole === 2) { %>
+          <% if (isLoggedIn && user.role_name === 'admin') { %>
             <a href="/edit-organization/<%= organization.id %>" class="button-secondary">Edit</a>
           <% } %>
         </div>

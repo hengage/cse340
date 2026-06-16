@@ -36,6 +36,10 @@ import {
   requireRole,
   showUsersList
 } from './controllers/users.js';
+import {
+  processVolunteer,
+  processRemoveVolunteer
+} from './controllers/volunteers.js';
 
 const router = express.Router();
 
@@ -54,6 +58,9 @@ router.get('/edit-project/:id', requireRole(), showEditProjectForm);
 router.post('/edit-project/:id', requireRole(), express.urlencoded({ extended: true }), processEditProjectForm);
 router.get('/project/:id/assign-categories', requireRole(), showAssignCategoriesForm);
 router.post('/project/:id/assign-categories', requireRole(), express.urlencoded({ extended: true }), processAssignCategoriesForm);
+
+router.post('/project/:id/volunteer', requireLogin, processVolunteer);
+router.post('/project/:id/remove-volunteer', requireLogin, processRemoveVolunteer);
 
 router.get('/categories', showCategoriesPage);
 router.get('/category/:id', showCategoryDetailsPage);

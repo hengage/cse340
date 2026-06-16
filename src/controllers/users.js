@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createUser, getUserByEmail, authenticateUser, getAllUsers } from '../models/users.js';
+import { getProjectsForUser } from '../models/volunteers.js';
 
 const siteName = 'Service Impact';
 
@@ -81,7 +82,6 @@ export async function processLoginForm(req, res, next) {
     if (user) {
       req.session.user = user;
       req.flash('message', 'Login successful!');
-      console.log('User logged in:', user);
       res.redirect('/dashboard');
     } else {
       req.flash('error', 'Login failed. Please check your email and password.');
@@ -114,19 +114,29 @@ export function requireLogin(req, res, next) {
   next();
 }
 
-export async function showDashboard(req, res) {
-  const { name, email, role_id } = req.session.user;
-  res.render('dashboard', { title: 'Dashboard', siteName, name, email, role_id });
+export async function showDashboard(req, res, next) {
+  try {
+    const user = req.session.user;
+    const volunteeredProjects = await getProjectsForUser(user.user_id);
+    res.render('dashboard', { 
+        title: 'Dashboard', 
+        siteName, 
+        user,
+        volunteeredProjects
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
-export function requireRole(role) {
+export function requireRole(role = 'admin') {
   return (req, res, next) => {
     if (!req.session || !req.session.user) {
       req.flash('error', 'You must be logged in to access that page.');
       return res.redirect('/login');
     }
     
-    if (req.session.user.role_id !== 2) { // role_id 2 is admin
+    if (req.session.user.role_name !== role) { // role_name check
       req.flash('error', 'You do not have permission to access that page.');
       return res.redirect('/dashboard');
     }
@@ -136,6 +146,7 @@ export function requireRole(role) {
 }
 
 export async function showUsersList(req, res) {
+
   try {
     const users = await getAllUsers();
     res.render('users', { title: 'Users', siteName, users });

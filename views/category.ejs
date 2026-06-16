@@ -4,7 +4,7 @@
     <p class="eyebrow">Category details</p>
     <h1><%= category.name %></h1>
     <p><%= category.description %></p>
-    <% if (isLoggedIn && userRole === 2) { %>
+    <% if (isLoggedIn && user.role_name === 'admin') { %>
       <a href="/edit-category/<%= category.id %>" class="button">Edit Category</a>
     <% } %>
   </div>
